@@ -266,6 +266,16 @@ void define_device(const py::object &m) {
                    sizeof(OBHdrConfig));
              });
            })
+      .def("set_ip_config",
+           [](const std::shared_ptr<ob::Device> &self,
+              const OBDeviceIpAddrConfig &config) {
+             OB_TRY_CATCH({
+               self->setStructuredData(
+                   OB_STRUCT_DEVICE_IP_ADDR_CONFIG,
+                   reinterpret_cast<const uint8_t *>(&config),
+                   sizeof(OBDeviceIpAddrConfig));
+             });
+           })
       .def("reboot",
            [](const std::shared_ptr<ob::Device> &self) { self->reboot(); })
       .def("get_baseline",
@@ -288,6 +298,12 @@ void define_device(const py::object &m) {
                    OB_STRUCT_DEVICE_TEMPERATURE,
                    reinterpret_cast<uint8_t *>(&temperature), &size);
                return temperature;
+             });
+           })
+      .def("enable_heart_beat",
+           [](const std::shared_ptr<ob::Device> &self, bool enable) {
+             OB_TRY_CATCH({
+               self->enableHeartbeat(enable);
              });
            })
       .def("get_multi_device_sync_config",
@@ -420,7 +436,19 @@ void define_device(const py::object &m) {
         std::string device_uid = self->getDeviceInfo()->uid();
         std::string other_device_uid = other->getDeviceInfo()->uid();
         return device_uid == other_device_uid;
-      });
+      })
+
+      .def("isFrameInterleaveSupported",
+            [](const std::shared_ptr<ob::Device> &self){
+                return self->isFrameInterleaveSupported();
+            })
+
+      .def("loadFrameInterleave",
+            [](const std::shared_ptr<ob::Device> &self,
+               const std::string &frameInterleaveName) { 
+               return self->loadFrameInterleave(frameInterleaveName.c_str());
+              });
+
 }
 
 void define_device_preset_list(const py::object &m) {

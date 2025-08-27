@@ -105,13 +105,19 @@ def main(argv):
         return
 
     device = pipeline.get_device()
-    config = OBHdrConfig()
-    config.enable = True
-    config.exposure_1 = 7500
-    config.gain_1 = 24
-    config.exposure_2 = 50
-    config.gain_2 = 16
-    device.set_hdr_config(config)
+    
+    if device.isFrameInterleaveSupported():
+        device.loadFrameInterleave("Depth from HDR")
+        device.set_bool_property(OBPropertyID.OB_PROP_FRAME_INTERLEAVE_ENABLE_BOOL,True)
+    else:
+        config = OBHdrConfig()
+        config.enable = True
+        config.exposure_1 = 7500
+        config.gain_1 = 24
+        config.exposure_2 = 100
+        config.gain_2 = 16
+        device.set_hdr_config(config)
+    
     hdr_filter = HDRMergeFilter()
 
     # Create window for visualization
