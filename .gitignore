@@ -160,6 +160,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!sdk/lib/
 lib64/
 parts/
 sdist/

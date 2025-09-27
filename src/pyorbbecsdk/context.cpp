@@ -69,6 +69,11 @@ void Context::enable_net_device_enumeration(bool enable) {
   OB_TRY_CATCH({ impl_->enableNetDeviceEnumeration(enable); });
 }
 
+bool Context::ob_force_ip_config(const std::string device_uid,
+                                 const OBDeviceIpAddrConfig &config) {
+  OB_TRY_CATCH({ return impl_->forceIp(device_uid.c_str(), config); });
+}
+
 void define_context(py::object &m) {
   py::class_<Context>(m, "Context")
       .def(py::init<>())
@@ -102,6 +107,13 @@ void define_context(py::object &m) {
            [](Context &self, bool enable) {
              self.enable_net_device_enumeration(enable);
            })
+      .def(
+          "ob_force_ip_config",
+          [](Context &self, const std::string device_uid,
+             const OBDeviceIpAddrConfig &config) {
+            return self.ob_force_ip_config(device_uid, config);
+          },
+          "Change the IP configuration")
       .def_static("set_logger_level",
                   [](OBLogSeverity level) { Context::set_logger_level(level); })
       .def_static(

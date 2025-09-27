@@ -20,6 +20,8 @@ import shutil
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 
+with open("README.md", "r", encoding="utf-8") as f:
+    long_description = f.read()
 
 class PrebuiltExtension(Extension):
     def __init__(self, name, lib_dir=''):
@@ -66,11 +68,12 @@ class CustomBuildExt(build_ext):
 
 setup(
     name='pyorbbecsdk',
-    version='2.0.13',
+    version='2.0.14',
     author='zhonghong',
     author_email='zhonghong@orbbec.com',
     description='pyorbbecsdk is a python wrapper for the OrbbecSDK',
-    long_description='',
+    long_description=long_description,           
+    long_description_content_type="text/markdown",
     ext_modules=[PrebuiltExtension('pyorbbecsdk', 'install/lib')],
     cmdclass={'build_ext': CustomBuildExt},
     zip_safe=False,

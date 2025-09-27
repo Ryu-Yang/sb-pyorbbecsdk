@@ -115,6 +115,8 @@ class Context:
         """
     def enable_net_device_enumeration(self, arg0: bool) -> None:
         ...
+    def ob_force_ip_config(self, arg0: str, arg1: OBDeviceIpAddrConfig) ->bool:
+        ...
     def query_devices(self) -> ...:
         """
         Query devices
@@ -274,6 +276,18 @@ class DeviceInfo:
         """
         Get device vid
         """
+    def get_device_ip_address(self) -> str:
+        """
+        Get device ip address
+        """
+    def get_device_subnet_mask(self) -> str:
+        """
+        Get device subnet mask
+        """
+    def get_device_gateway(self) -> str:
+        """
+        Get device gateway
+        """
 class DeviceList:
     def __getitem__(self, arg0: int) -> ...:
         ...
@@ -287,6 +301,8 @@ class DeviceList:
         ...
     def get_device_by_uid(self, arg0: str) -> ...:
         ...
+    def get_device_name_by_index(self, arg0: int) -> str:
+        ...
     def get_device_pid_by_index(self, arg0: int) -> int:
         ...
     def get_device_serial_number_by_index(self, arg0: int) -> str:
@@ -294,6 +310,22 @@ class DeviceList:
     def get_device_uid_by_index(self, arg0: int) -> str:
         ...
     def get_device_vid_by_index(self, arg0: int) -> int:
+        ...
+    def get_device_connection_type_by_index(self, arg0: int) -> str:
+        ...
+    def get_device_ip_address_by_index(self, arg0: int) -> str:
+        ...
+    def get_device_subnet_mask_by_index(self, arg0: int) -> str:
+        ...
+    def get_device_gateway_by_index(self, arg0: int) -> str:
+        ...
+    def get_local_mac_address(self, arg0: int) -> str:
+        ...
+    def get_local_ip(self, arg0: int) -> str:
+        ...
+    def get_local_subnet_length(self, arg0: int) -> int:
+        ...
+    def get_local_gateway(self, arg0: int) -> str:
         ...
 class DevicePresetList:
     def __contains__(self, arg0: str) -> bool:

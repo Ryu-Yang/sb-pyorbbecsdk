@@ -83,6 +83,24 @@ void define_device_info(const py::object &m) {
             return self->deviceType();
           },
           "Get the device type")
+      .def(
+          "get_device_ip_address",
+          [](const std::shared_ptr<ob::DeviceInfo> &self) {
+            return std::string(self->getIpAddress());
+          },
+          "Get device ip address")
+      .def(
+          "get_device_subnet_mask",
+          [](const std::shared_ptr<ob::DeviceInfo> &self) {
+            return std::string(self->getDeviceSubnetMask());
+          },
+          "Get device subnet mask")
+      .def(
+          "get_device_gateway",
+          [](const std::shared_ptr<ob::DeviceInfo> &self) {
+            return std::string(self->getDevicegateway());
+          },
+          "Get device gateway")
       .def("__repr__", [](const std::shared_ptr<ob::DeviceInfo> &self) {
         std::ostringstream oss;
         oss << "DeviceInfo(name=" << self->name() << std::endl
@@ -302,9 +320,7 @@ void define_device(const py::object &m) {
            })
       .def("enable_heart_beat",
            [](const std::shared_ptr<ob::Device> &self, bool enable) {
-             OB_TRY_CATCH({
-               self->enableHeartbeat(enable);
-             });
+             OB_TRY_CATCH({ self->enableHeartbeat(enable); });
            })
       .def("get_multi_device_sync_config",
            [](const std::shared_ptr<ob::Device> &self) {
@@ -401,54 +417,59 @@ void define_device(const py::object &m) {
           // Parameter definitions with default async_update=true
           py::arg("file_path"), py::arg("callback"),
           py::arg("async_update") = true)
-      .def("update_optional_depth_presets",
+      .def(
+          "update_optional_depth_presets",
           [](const std::shared_ptr<ob::Device> &self,
-            const py::list &file_path_list, const py::function &callback) {
+             const py::list &file_path_list, const py::function &callback) {
+            // Ensure the number of file paths does not exceed the max allowed
+            uint8_t path_count = static_cast<uint8_t>(file_path_list.size());
 
-              // Ensure the number of file paths does not exceed the max allowed
-              uint8_t path_count = static_cast<uint8_t>(file_path_list.size());
+            // Create a 2D array of char to store file paths
+            char filePathList[OB_PATH_MAX][1024] =
+                {};  // OB_PATH_MAX and 1024 as fixed size
 
-              // Create a 2D array of char to store file paths
-              char filePathList[OB_PATH_MAX][1024] = {};  // OB_PATH_MAX and 1024 as fixed size
-
-              // Copy file paths into the array
-              for (size_t i = 0; i < path_count; ++i) {
-                  const std::string &file_path = file_path_list[i].cast<std::string>();
-                  if (file_path.size() >= 1024) {
-                      throw std::invalid_argument("One or more file paths exceed the maximum allowed length.");
-                  }
-                  strncpy(filePathList[i], file_path.c_str(), 1024);  // Copy up to 1024 chars
+            // Copy file paths into the array
+            for (size_t i = 0; i < path_count; ++i) {
+              const std::string &file_path =
+                  file_path_list[i].cast<std::string>();
+              if (file_path.size() >= 1024) {
+                throw std::invalid_argument(
+                    "One or more file paths exceed the maximum allowed "
+                    "length.");
               }
+              strncpy(filePathList[i], file_path.c_str(),
+                      1024);  // Copy up to 1024 chars
+            }
 
-              // Call the C++ function with the 2D array
-              py::gil_scoped_release release;
-              self->updateOptionalDepthPresets(filePathList, path_count,
-                  [callback](OBFwUpdateState state, const char *message, uint8_t percent) {
-                      py::gil_scoped_acquire acquire;
-                      callback(state, message, percent);
-                  });
+            // Call the C++ function with the 2D array
+            py::gil_scoped_release release;
+            self->updateOptionalDepthPresets(
+                filePathList, path_count,
+                [callback](OBFwUpdateState state, const char *message,
+                           uint8_t percent) {
+                  py::gil_scoped_acquire acquire;
+                  callback(state, message, percent);
+                });
           },
-          py::arg("file_path_list"), py::arg("callback")
-        )
+          py::arg("file_path_list"), py::arg("callback"))
 
-      .def("__eq__", [](const std::shared_ptr<ob::Device> &self,
-                        const std::shared_ptr<ob::Device> &other) {
-        std::string device_uid = self->getDeviceInfo()->uid();
-        std::string other_device_uid = other->getDeviceInfo()->uid();
-        return device_uid == other_device_uid;
-      })
+      .def("__eq__",
+           [](const std::shared_ptr<ob::Device> &self,
+              const std::shared_ptr<ob::Device> &other) {
+             std::string device_uid = self->getDeviceInfo()->uid();
+             std::string other_device_uid = other->getDeviceInfo()->uid();
+             return device_uid == other_device_uid;
+           })
 
       .def("isFrameInterleaveSupported",
-            [](const std::shared_ptr<ob::Device> &self){
-                return self->isFrameInterleaveSupported();
-            })
+           [](const std::shared_ptr<ob::Device> &self) {
+             return self->isFrameInterleaveSupported();
+           })
 
-      .def("loadFrameInterleave",
-            [](const std::shared_ptr<ob::Device> &self,
-               const std::string &frameInterleaveName) { 
-               return self->loadFrameInterleave(frameInterleaveName.c_str());
-              });
-
+      .def("loadFrameInterleave", [](const std::shared_ptr<ob::Device> &self,
+                                     const std::string &frameInterleaveName) {
+        return self->loadFrameInterleave(frameInterleaveName.c_str());
+      });
 }
 
 void define_device_preset_list(const py::object &m) {
@@ -484,6 +505,10 @@ void define_device_list(const py::object &m) {
            [](const std::shared_ptr<ob::DeviceList> &self) {
              return self->deviceCount();
            })
+      .def("get_device_name_by_index",
+           [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+             return std::string(self->getName(index));
+           })
       .def("get_device_pid_by_index",
            [](const std::shared_ptr<ob::DeviceList> &self, int index) {
              return self->pid(index);
@@ -498,6 +523,10 @@ void define_device_list(const py::object &m) {
       .def("get_device_uid_by_index",
            [](const std::shared_ptr<ob::DeviceList> &self,
               int index) -> std::string { return self->uid(index); })
+      .def("get_device_connection_type_by_index",
+           [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+             return std::string(self->getConnectionType(index));
+           })
       .def("get_device_by_index",
            [](const std::shared_ptr<ob::DeviceList> &self, int index) {
              OB_TRY_CATCH({ return self->getDevice(index); });
@@ -513,6 +542,42 @@ void define_device_list(const py::object &m) {
               const std::string &uid) {
              OB_TRY_CATCH({ return self->getDeviceByUid(uid.c_str()); });
            })
+      .def("get_device_ip_address_by_index",
+           [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+             return std::string(self->getIpAddress(index));
+           })
+      .def("get_device_subnet_mask_by_index",
+           [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+             return std::string(self->getSubnetMask(index));
+           })
+      .def("get_device_gateway_by_index",
+           [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+             return std::string(self->getGateway(index));
+           })
+      .def(
+          "get_local_mac_address",
+          [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+            return std::string(self->getLocalMacAddress(index));
+          },
+          "Get the host Mac address for the specified device")
+      .def(
+          "get_local_ip",
+          [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+            return std::string(self->getLocalIP(index));
+          },
+          "Get the host Ip address for the specified device")
+      .def(
+          "get_local_subnet_length",
+          [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+            return self->getLocalSubnetLength(index);
+          },
+          "Get the host subnet length for the specified device")
+      .def(
+          "get_local_gateway",
+          [](const std::shared_ptr<ob::DeviceList> &self, int index) {
+            return std::string(self->getLocalGateway(index));
+          },
+          "Get the host gateway for the specified device")
       .def("__len__",
            [](const std::shared_ptr<ob::DeviceList> &self) {
              return self->deviceCount();

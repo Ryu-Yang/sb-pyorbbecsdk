@@ -40,6 +40,9 @@ class Context {
 
   void enable_net_device_enumeration(bool enable);
 
+  bool ob_force_ip_config(const std::string device_uid,
+                          const OBDeviceIpAddrConfig &config);
+
   static void set_logger_level(OBLogSeverity level);
 
   static void set_logger_to_console(OBLogSeverity level);
