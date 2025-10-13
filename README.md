@@ -172,8 +172,10 @@ Here is the device support list of main branch (v1.x) and v2-main branch (v2.x):
 - Windows: Windows 10 (x64)
 - Linux: 18.04/20.04/22.04 (x64)
 - Arm64: Ubuntu18.04/20.04/22.04
-- Linux ARM32: coming soon
 
+## Supported Python Versions
+
+python 3.8 to python 3.13
 
 ## Environment Setup
 
@@ -206,11 +208,19 @@ For Linux, we have provided a script to help you set up the environment. You can
 *Notes: If this script is not executed, open the device will fail due to permission issues.*
 
 ## How to Use install package
-First, you need to download the corresponding [.whl installation package](https://github.com/orbbec/pyorbbecsdk/releases) based on your system's Python version. Then refer to [this document](https://orbbec.github.io/pyorbbecsdk/source/2_installation/install_the_package.html#) for installation.
+To make Python more user-friendly, we have created a Python installation package,we provide installation packages for Python versions 3.8 to 3.13.
+
+First, you need to download the corresponding [installation package](https://github.com/orbbec/pyorbbecsdk/releases) based on your system's Python version. Then refer to [this document](https://orbbec.github.io/pyorbbecsdk/source/2_installation/install_the_package.html#) for installation.
+
+- The file pyorbbecsdk-xxx-xxx-xxx-win_amd64.whl serves as the installation package for python wrapper On Win10.
+- The file pyorbbecsdk-xxx-xxx-xxx-linux_x86_64.whl serves as the installation package for python wrapper On Linux x64，likes ubuntu.
+- The file pyorbbecsdk-xxx-xxx-xxx-linux_aarch64.whl serves as the installation package for python wrapper on Arm64，likes Nvidia Jetson nano、Orin nano、Orin NX，AGX NX.
 
 
 ## Documentation
-Refer to [UserGuide](https://orbbec.github.io/pyorbbecsdk/index.html) for detailed documentation.
+
+[Orbbec SDK V2 Python Wrapper User Guide](https://orbbec.github.io/pyorbbecsdk/index.html) provides an overview of the concepts and architecture of Orbbec SDK v2, details on the Python Wrapper installation packages and source compilation, an introduction to commonly used Python Wrapper interfaces, and a FAQ section. Please read it carefully.
+
 
 ## License
 This project is licensed under the Apache License 2.0.
