@@ -126,14 +126,17 @@ Here is the device support list of main branch (v1.x) and v2-main branch (v2.x):
     </tr>
     <tr>
       <td style="text-align: center; font-weight: bold;">Astra Mini</td>
-      <td>Astra Mini Pro</td>
+      <td>Astra Mini (S) Pro</td>
       <td>full maintenance</td>
-      <td>not supported</td>
+      <td>recommended for new designs</td>
     </tr>
   </tbody>
 </table>
 
-**Note**: If you do not find your device, please contact our FAE or sales representative for help.
+**Note**:
+- If you do not find your device, please contact our FAE or sales representative for help.
+- Starting from October 2025 (Orbbec SDK v2.5.5), we will begin upgrading devices that use the OpenNI protocol to the UVC protocol, Already upgraded devices and future upgrade schedule and how to upgrade from openni protocol to uvc protocol,please refer to [the document](https://github.com/orbbec/OrbbecSDK_v2?tab=readme-ov-file#12-upgrading-from-openni-protocol-to-uvc-protocol).
+
 
 **Definition**:
 
@@ -146,17 +149,17 @@ Here is the device support list of main branch (v1.x) and v2-main branch (v2.x):
 
 ## Hardware Products Supported by Python SDK
 
-| **Products List** | **Minimal Firmware Version** | **Recommended FW Version**    |
+| **Products List** | **Minimal Firmware Version** | **Recommended Firmware Version**    |
 |-------------------|------------------------------|-------------------------------|
-| Gemini 435Le        | 1.2.4                     |        1.3.2                   |
-| Gemini 335Le        | 1.5.31                     |        1.5.55                     |
-| Gemini 330        | 1.2.20                       |        1.5.55                       |
-| Gemini 330L       | 1.2.20                       |       1.5.55                      |
-| Gemini 335        | 1.2.20                       |       1.5.55                        |
-| Gemini 335L       | 1.2.20                       |        1.5.55                       |
-| Gemini 336        | 1.2.20                       |       1.5.55                        |
-| Gemini 336L       | 1.2.20                       |        1.5.55                       |
-| Gemini 335Lg      | 1.3.46                       |        1.5.55                       |
+| Gemini 435Le        | 1.2.4                     |        1.3.6                   |
+| Gemini 335Le        | 1.5.31                     |        1.6.00                     |
+| Gemini 330        | 1.2.20                       |        1.6.00                       |
+| Gemini 330L       | 1.2.20                       |       1.6.00                      |
+| Gemini 335        | 1.2.20                       |       1.6.00                        |
+| Gemini 335L       | 1.2.20                       |        1.6.00                       |
+| Gemini 336        | 1.2.20                       |       1.6.00                        |
+| Gemini 336L       | 1.2.20                       |        1.6.00                       |
+| Gemini 335Lg      | 1.3.46                       |        1.6.00                       |
 | Femto Bolt        | 1.1.2                  |              1.1.2                       |
 | Femto Mega        | 1.3.0                  |              1.3.1                       |
 | Femto Mega I        | 2.0.4                  |            2.0.4                     |
@@ -165,7 +168,8 @@ Here is the device support list of main branch (v1.x) and v2-main branch (v2.x):
 | Gemini 2          | 1.4.92               |                1.4.98                       |
 | Gemini 215        | 1.0.9                        |        1.0.9                      |
 | Gemini 210        | 1.0.9                        |        1.0.9                      |
-
+| Astra mini Pro        | 2.0.03                        |        2.0.03                        |
+| Astra mini S Pro        | 2.0.03                        |        2.0.03                        |
 
 ## Supported Platforms
 
@@ -208,7 +212,20 @@ For Linux, we have provided a script to help you set up the environment. You can
 *Notes: If this script is not executed, open the device will fail due to permission issues.*
 
 ## How to Use install package
-To make Python more user-friendly, we have created a Python installation package,we provide installation packages for Python versions 3.8 to 3.13.
+To make Python more user-friendly, We provide two installation methods: online installation and offline installation.
+
+### online installation
+
+We provide online installation packages for Python versions **3.9** to **3.13**. The installation methods are as follows:
+
+```cpp
+pip install pyorbbecsdk2
+```
+
+
+### offline installation
+
+We provide offline installation packages for Python versions **3.8** to **3.13**.
 
 First, you need to download the corresponding [installation package](https://github.com/orbbec/pyorbbecsdk/releases) based on your system's Python version. Then refer to [this document](https://orbbec.github.io/pyorbbecsdk/source/2_installation/install_the_package.html#) for installation.
 
