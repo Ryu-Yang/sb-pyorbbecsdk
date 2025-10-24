@@ -36,6 +36,8 @@ If your device is included in this supported list, we recommend using the v2-mai
 | Gemini 2          | 1.4.92               |
 | Gemini 215        | 1.0.9                        |
 | Gemini 210        | 1.0.9                        |
+| Astra Mini Pro  | 2.0.03                      |
+| Astra Mini S Pro  | 2.0.03                      |
 
 the main branch supports the following devices:
 

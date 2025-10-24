@@ -971,6 +971,72 @@ device_info = device.get_device_info()
 serial_number = device_info.get_serial_number()
 ```
 
+## Obtain the IP Config
+
+```python
+from pyorbbecsdk import *
+
+context = Context()
+
+device_list = context.query_devices()
+device = device_list.get_device_by_index(0)
+device_info = device.get_device_info()
+
+# get device ip address
+ip_address = device_info.get_device_ip_address()
+subnet_mask = device_info.get_device_subnet_mask()
+gateway = device_info.get_device_gateway()
+
+```
+
+## Obtain Local Network Configuration
+
+```python
+from pyorbbecsdk import *
+
+context = Context()
+
+device_list = context.query_devices()
+
+# get local network configuration
+local_mac_address = device_list.get_local_mac_address(0)
+local_ip = device_list.get_local_ip(0)
+local_subnet_length = device_list.get_local_subnet_length(0)
+local_gateway = device_list.get_local_gateway(0)
+
+```
+
+## IP Configuration
+
+These functions manage the device’s network settings, including normal IP configuration (saved across power cycles) and forced IP configuration (temporary, not saved).
+
+### Set IP Configuration (Persistent)
+
+Set the IP address, subnet mask, and gateway for the device. The configuration is saved to the device, so it remains effective after the device is powered off.
+
+```python
+from pyorbbecsdk import *
+# Load and enable frame interleave
+config = OBDeviceIpAddrConfig()
+config.address = "192.168.1.32"
+config.netmask = "255.255.255.0"
+config.gateway = "192.168.1.1"
+device.set_ip_config(config)
+```
+
+### Force IP Configuration (Temporary)
+
+Force the device to use the specified IP settings. The configuration is temporary and will be lost after the device is powered off.
+
+```python
+from pyorbbecsdk import *
+# Force temporary IP settings (not saved after power off)
+config = get_ip_config()
+device_status = context.ob_force_ip_config(device_list.get_device_uid_by_index(device_number), config)
+```
+
+For detailed code, refer to: [examples/forceip.py](https://github.com/orbbec/pyorbbecsdk/blob/v2-main/examples/forceip.py).
+
 ## Stream Profile
 
 Method 1: obtain stream profile by resolution, frame format, and frame rate
@@ -1716,3 +1782,39 @@ Running results:
 We use the timestamps of the Primary and Secondary printed by Sample to determine if they are synchronized on.
 
 ![Multi_sync](../image/multi_sync.png)
+
+## Frame Interleave
+
+Introduced a new function for alternating laser with interleave speckle IR image and pure IR image output (requires firmware v1.4.00 or above).
+
+### Load Frame Interleave
+
+Load the interleaved frame data from the device.
+
+```python
+from pyorbbecsdk import *
+# Load and enable frame interleave
+device.loadFrameInterleave("Laser On-Off")
+device.set_bool_property(OBPropertyID.OB_PROP_FRAME_INTERLEAVE_ENABLE_BOOL, True)
+```
+
+### Check Frame Interleave Support
+
+Query whether the device supports frame interleaving.
+
+```python
+from pyorbbecsdk import *
+# Returns True if frame interleaving is supported, False otherwise
+supported = device.isFrameInterleaveSupported()
+```
+
+For detailed code, refer to: [examples/laser_interleave.py](https://github.com/orbbec/pyorbbecsdk/blob/v2-main/examples/laser_interleave.py).
+
+## Heart Beat Control
+
+Heart Beat allows the host to maintain an active connection with the device to prevent timeout or disconnection.
+
+```python
+from pyorbbecsdk import *
+# Enable the heart beat mechanism
+device.enable_heart_beat(True)

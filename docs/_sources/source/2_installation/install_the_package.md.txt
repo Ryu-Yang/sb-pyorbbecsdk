@@ -1,4 +1,14 @@
-#  Install from .whl Package
+# Online installation
+We provide online installation packages for Python versions **3.9** to **3.13**. The installation methods are as follows:
+
+```cpp
+pip install pyorbbecsdk2
+```
+
+
+# Offline installation
+
+We provide offline installation packages for Python versions **3.8** to **3.13**.
 
 ## Linux
 ### Prerequisites
