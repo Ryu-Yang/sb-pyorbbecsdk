@@ -1,0 +1,42 @@
+[build-system]
+requires = [
+    "uv>=0.1.0",
+    "setuptools>=65.0",
+    "wheel>=0.40.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sb-pyorbbecsdk"
+version = "1.3.1"
+authors = [
+    {name = "Joe Dong", email = "mocun@orbbec.com"},
+    {name = "Xiang Yang", email = "yangxiang@baai.ac.cn"},
+]
+description = "Python wrapper for the Orbbec 3D Camera SDK"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/orbbec/pyorbbecsdk"
+Repository = "https://github.com/orbbec/pyorbbecsdk"
+
+[tool.setuptools]
+packages = ["pyorbbecsdk"]
+package-dir = {pyorbbecsdk = "src/pyorbbecsdk"}
+
+[tool.setuptools.package-data]
+pyorbbecsdk = ["*.pyi", "py.typed"]  # 类型提示文件

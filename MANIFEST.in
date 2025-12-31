@@ -1,0 +1,15 @@
+include LICENSE
+include README.md
+include requirements.txt
+include pyproject.toml
+
+# 包含 C++ SDK 相关文件
+recursive-include include *.h *.hpp
+recursive-include install/lib *.so *.so.* *.dylib *.dll *.pyd
+
+# 排除构建目录
+exclude build
+exclude dist
+exclude *.egg-info
+exclude __pycache__
+exclude *.py[co]

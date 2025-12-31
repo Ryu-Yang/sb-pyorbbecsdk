@@ -200,9 +200,9 @@ Create a virtual environment and build the project.
 
 ```bash
 cd pyorbbecsdk
-python3 -m venv ./venv
-source venv/bin/activate
-pip3 install -r requirements.txt
+uv venv -p 3.10
+source .venv/bin/activate
+uv pip install -r requirements.txt
 mkdir build
 cd build
 cmake -Dpybind11_DIR=`pybind11-config --cmakedir` ..
@@ -245,18 +245,18 @@ Generate a wheel package for easy distribution and installation.
 
 ```bash
 cd pyorbbecsdk
-python3 -m venv ./venv
-source venv/bin/activate
-pip3 install -r requirements.txt
+uv venv -p 3.10
+source .venv/bin/activate
+uv pip install -r requirements.txt
 mkdir build
 cd build
 cmake -Dpybind11_DIR=`pybind11-config --cmakedir` ..
 make -j4
 make install
 cd ..
-pip3 install wheel
-python3 setup.py bdist_wheel
-pip3 install dist/*.whl
+uv pip install wheel
+uv run python setup.py bdist_wheel
+uv pip install dist/*.whl
 ```
 
 ## Enabling Device Timestamps via UVC Protocol on Windows
